@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MobSys</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="button_name">Готово</string>
+    <string name="name_or_surname_is_empty">Не все поля заполнены</string>
+</resources>
