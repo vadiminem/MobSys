@@ -4,4 +4,6 @@
     <string name="surname">Фамилия</string>
     <string name="button_name">Готово</string>
     <string name="name_or_surname_is_empty">Не все поля заполнены</string>
+    <string name="open_activity">Перейти в другое активити</string>
+    <string name="pr_4">PR 4</string>
 </resources>
