@@ -17,7 +17,6 @@ class PR31Activity : AppCompatActivity() {
     internal fun addToHistory(historyItem: HistoryModel) {
         val result = Intent()
         result.putExtra("resultItem", historyItem)
-        Log.d("HISTORYITEM", historyItem.getName())
         setResult(1, result)
         finish()
     }
