@@ -6,4 +6,7 @@
     <string name="name_or_surname_is_empty">Не все поля заполнены</string>
     <string name="open_activity">Перейти в другое активити</string>
     <string name="pr_4">PR 4</string>
+    <string name="player_button_name">Плеер</string>
+    <string name="play_button_name">Play</string>
+    <string name="stop_button_name">Stop</string>
 </resources>

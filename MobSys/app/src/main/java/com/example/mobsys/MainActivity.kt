@@ -25,6 +25,11 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("history", history)
             startActivity(intent)
         }
+
+        findViewById<Button>(R.id.player)?.setOnClickListener {
+            val intent = Intent(this, Player::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

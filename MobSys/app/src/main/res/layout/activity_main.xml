@@ -21,16 +21,22 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/openActivityButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/open_activity" />
+    <Button
+        android:id="@+id/openActivityButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/open_activity" />
 
-        <Button
-            android:id="@+id/openPR4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pr_4" />
+    <Button
+        android:id="@+id/openPR4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pr_4" />
+
+    <Button
+        android:id="@+id/player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/player_button_name" />
 
 </LinearLayout>
