@@ -1,9 +1,11 @@
 package com.example.mobsys
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
@@ -25,6 +27,8 @@ class Player : AppCompatActivity() {
         findViewById<Button>(R.id.open_link_in_browser_button)?.setOnClickListener {
             openLinkInBrowser()
         }
+
+
     }
 
     private fun openLinkInBrowser() {
@@ -38,4 +42,5 @@ class Player : AppCompatActivity() {
             Log.d("INTENT", "Unable to process intent")
         }
     }
+
 }
