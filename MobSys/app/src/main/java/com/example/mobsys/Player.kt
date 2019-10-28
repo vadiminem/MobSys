@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 
 class Player : AppCompatActivity() {
 
@@ -32,6 +33,7 @@ class Player : AppCompatActivity() {
 
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
+            Toast.makeText(this, "Link was open", Toast.LENGTH_SHORT).show()
         } else {
             Log.d("INTENT", "Unable to process intent")
         }
