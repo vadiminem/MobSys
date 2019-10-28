@@ -2,22 +2,31 @@ package com.example.mobsys
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.mobsys.data.HistoryContract
 import com.example.mobsys.data.HistoryContract.History
 import com.example.mobsys.data.HistoryDbHelper
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment1.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var pref: SharedPreferences
+    private val APP_PREFERENCES = "settings"
+    private val APP_PREFERENCES_NAME = "name"
     var history = arrayListOf<HistoryModel>()
     private val RESULT_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        pref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
         findViewById<Button>(R.id.openActivityButton)?.setOnClickListener {
             val intent = Intent(this, PR31Activity::class.java)
@@ -47,6 +56,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        val editor = pref.edit()
+        editor.putString(APP_PREFERENCES_NAME, name.text.toString())
+        editor.apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (pref.contains(APP_PREFERENCES_NAME)) {
+            name.setText(pref.getString(APP_PREFERENCES_NAME, ""))
+        }
+    }
+
+
 
     private fun readFromDb() {
         val db = HistoryDbHelper(this).readableDatabase
