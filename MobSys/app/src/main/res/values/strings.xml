@@ -10,4 +10,5 @@
     <string name="play_button_name">Play</string>
     <string name="stop_button_name">Stop</string>
     <string name="open_link">Open link</string>
+    <string name="save_person_menu">Save</string>
 </resources>

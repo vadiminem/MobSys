@@ -1,113 +1,123 @@
 package com.example.mobsys
 
-import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import com.example.mobsys.data.HistoryContract
-import com.example.mobsys.data.HistoryContract.History
-import com.example.mobsys.data.HistoryDbHelper
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment1.*
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
+    val ADD_PERSON_REQUEST = 1
+    val EDIT_PERSON_REQUEST = 2
 
-    private lateinit var pref: SharedPreferences
-    private val APP_PREFERENCES = "settings"
-    private val APP_PREFERENCES_NAME = "name"
-    var history = arrayListOf<HistoryModel>()
-    private val RESULT_CODE = 1
+    private lateinit var personViewModel: PersonViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        pref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-
-        findViewById<Button>(R.id.openActivityButton)?.setOnClickListener {
-            val intent = Intent(this, PR31Activity::class.java)
-            startActivityForResult(intent, RESULT_CODE)
+        val buttonAddPerson = findViewById<FloatingActionButton>(R.id.button_add_person)
+        buttonAddPerson.setOnClickListener {
+            val intent = Intent(this, AddEditPersonActivity::class.java)
+            startActivityForResult(intent, ADD_PERSON_REQUEST)
         }
 
-        findViewById<Button>(R.id.openPR4)?.setOnClickListener {
-            readFromDb()
-            val intent = Intent(this, PR4Activity::class.java)
-            intent.putExtra("history", history)
-            startActivity(intent)
-        }
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
 
-        findViewById<Button>(R.id.player)?.setOnClickListener {
-            val intent = Intent(this, Player::class.java)
-            startActivity(intent)
+        val personAdapter = PersonAdapter()
+        recyclerView.adapter = personAdapter
+
+        personViewModel = ViewModelProviders.of(this).get(PersonViewModel::class.java)
+        personViewModel.getAllPersons()?.observe(this,
+            Observer<List<Person>> { persons -> personAdapter.submitList(persons) })
+
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT)
+            ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                personViewModel.delete(personAdapter.getPersonAt(viewHolder.adapterPosition))
+                Toast.makeText(applicationContext, "Person deleted", Toast.LENGTH_SHORT).show()
+            }
+
         }
+        ).attachToRecyclerView(recyclerView)
+
+        personAdapter.setOnItemClickListener(object : PersonAdapter.OnItemClickListener {
+            override fun onItemClick(person: Person) {
+                val intent = Intent(applicationContext, AddEditPersonActivity::class.java)
+                intent.putExtra(AddEditPersonActivity().EXTRA_ID, person.getId())
+                intent.putExtra(AddEditPersonActivity().EXTRA_NAME, person.getName())
+                intent.putExtra(AddEditPersonActivity().EXTRA_SURNAME, person.getSurname())
+                startActivityForResult(intent, EDIT_PERSON_REQUEST)
+            }
+        })
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RESULT_CODE && data != null) {
-            if (resultCode == 1) {
-                val historyItem =
-                    data.getSerializableExtra("resultItem") as HistoryModel
-                addToHistory(historyItem)
+
+        if (requestCode == ADD_PERSON_REQUEST && resultCode == RESULT_OK) {
+            val name = data?.getStringExtra(AddEditPersonActivity().EXTRA_NAME)
+            val surname = data?.getStringExtra(AddEditPersonActivity().EXTRA_SURNAME)
+
+            val person = Person(name, surname)
+            personViewModel.insert(person)
+
+            Toast.makeText(this, "Person saved", Toast.LENGTH_SHORT).show()
+        } else if (requestCode == EDIT_PERSON_REQUEST && resultCode == RESULT_OK) {
+            val id = data?.getIntExtra(AddEditPersonActivity().EXTRA_ID, -1)
+
+            if (id == -1) {
+                Toast.makeText(this, "Person can't be updated", Toast.LENGTH_SHORT).show()
+                return
             }
+
+            val name = data?.getStringExtra(AddEditPersonActivity().EXTRA_NAME)
+            val surname = data?.getStringExtra(AddEditPersonActivity().EXTRA_SURNAME)
+
+            val person = Person(name, surname)
+            id?.let { person.setId(it) }
+            personViewModel.update(person)
+
+        } else {
+            Toast.makeText(this, "Person not saved", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        val editor = pref.edit()
-        editor.putString(APP_PREFERENCES_NAME, name.text.toString())
-        editor.apply()
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuInflater = menuInflater
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        if (pref.contains(APP_PREFERENCES_NAME)) {
-            name.setText(pref.getString(APP_PREFERENCES_NAME, ""))
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.delete_all_persons -> {
+                personViewModel.deleteAllPersons()
+                Toast.makeText(this, "All persons deleted", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
-
-
-
-    private fun readFromDb() {
-        val db = HistoryDbHelper(this).readableDatabase
-        val cursor = db.query(
-            History().TABLE_NAME,
-            arrayOf(History().COLUMN_NAME, History().COLUMN_SURNAME),
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-
-        val nameColumnIndex = cursor.getColumnIndex(History().COLUMN_NAME)
-        val surnameColumnIndex = cursor.getColumnIndex(History().COLUMN_SURNAME)
-
-        while (cursor.moveToNext()) {
-
-            history.add(
-                HistoryModel(
-                    cursor.getString(nameColumnIndex),
-                    cursor.getString(surnameColumnIndex)
-                )
-            )
-        }
-    }
-
-    internal fun addToHistory(historyItem: HistoryModel) {
-        val db = HistoryDbHelper(this).writableDatabase
-        val values = ContentValues()
-        values.put(History().COLUMN_NAME, historyItem.getName())
-        values.put(History().COLUMN_SURNAME, historyItem.getSurname())
-
-        db.insert(History().TABLE_NAME, null, values)
-    }
-
 }

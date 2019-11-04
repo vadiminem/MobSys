@@ -1,17 +1,11 @@
-package com.example.mobsys
+package com.example.mobsys.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
-import android.widget.Adapter
-import android.widget.ArrayAdapter
 import android.widget.ListView
-import kotlinx.android.synthetic.main.list_item_history.*
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileOutputStream
-import java.io.FileReader
+import com.example.mobsys.R
+import com.example.mobsys.model.HistoryModel
 
 class PR4Activity : AppCompatActivity() {
 

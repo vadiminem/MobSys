@@ -1,13 +1,12 @@
-package com.example.mobsys
+package com.example.mobsys.services
 
 import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
-import android.os.Environment
 import android.os.Handler
 import android.os.IBinder
-import android.util.Log
 import android.widget.Toast
+import com.example.mobsys.R
 import java.io.File
 
 class PlayerService : Service() {
@@ -39,7 +38,12 @@ class PlayerService : Service() {
         //Log.d("FILENAME", testFile.absolutePath)
         //if (!file.exists()) file.mkdir()
 
-        writeCurrentPositionThread = WriteCurrentPositionThread(mPlayer, handler, file)
+        writeCurrentPositionThread =
+            WriteCurrentPositionThread(
+                mPlayer,
+                handler,
+                file
+            )
         handler.postDelayed(writeCurrentPositionThread, 50)
         mPlayer.start()
         return super.onStartCommand(intent, flags, startId)

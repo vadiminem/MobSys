@@ -1,14 +1,13 @@
-package com.example.mobsys
+package com.example.mobsys.view
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.mobsys.R
+import com.example.mobsys.model.HistoryModel
 
 
 class HistoryAdapter(

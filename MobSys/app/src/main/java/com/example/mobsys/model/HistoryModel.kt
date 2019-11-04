@@ -1,10 +1,11 @@
-package com.example.mobsys
+package com.example.mobsys.model
 
 import java.io.Serializable
 
 
 class HistoryModel : Serializable{
 
+    var id: Long = 0
     private var name: String = ""
     private var surname: String = ""
 

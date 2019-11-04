@@ -1,11 +1,10 @@
-package com.example.mobsys
+package com.example.mobsys.view
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import com.example.mobsys.R
+import com.example.mobsys.model.HistoryModel
 
 class PR31Activity : AppCompatActivity() {
 

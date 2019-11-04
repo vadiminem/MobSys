@@ -1,14 +1,14 @@
-package com.example.mobsys
+package com.example.mobsys.view
 
 import android.content.Intent
-import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import com.example.mobsys.services.PlayerService
+import com.example.mobsys.R
 
 class Player : AppCompatActivity() {
 

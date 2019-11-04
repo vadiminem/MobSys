@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PR31Activity">
+    tools:context=".view.PR31Activity">
 
     <fragment
         android:id="@+id/fragment3"
-        android:name="com.example.mobsys.Fragment1"
+        android:name="com.example.mobsys.view.fragments.Fragment1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>

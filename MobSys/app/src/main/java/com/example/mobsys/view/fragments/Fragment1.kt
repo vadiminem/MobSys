@@ -1,12 +1,15 @@
-package com.example.mobsys
+package com.example.mobsys.view.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.mobsys.R
+import com.example.mobsys.model.HistoryModel
+import com.example.mobsys.MainActivity
+import com.example.mobsys.view.PR31Activity
 import kotlinx.android.synthetic.main.fragment1.*
 import kotlinx.android.synthetic.main.fragment1.view.*
 
@@ -41,10 +44,20 @@ class Fragment1 : Fragment() {
     }
 
     private fun addToHistory(name: String, surname: String) {
-        if (activity is MainActivity)
-        (activity as MainActivity).addToHistory(HistoryModel(name, surname))
+        /*if (activity is MainActivity)
+        (activity as MainActivity).addToHistory(
+            HistoryModel(
+                name,
+                surname
+            )
+        )
         else if (activity is PR31Activity)
-            (activity as PR31Activity).addToHistory(HistoryModel(name, surname))
+            (activity as PR31Activity).addToHistory(
+                HistoryModel(
+                    name,
+                    surname
+                )
+            )*/
     }
 
 }

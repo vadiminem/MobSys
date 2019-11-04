@@ -1,4 +1,4 @@
-package com.example.mobsys
+package com.example.mobsys.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.mobsys.R
+import com.example.mobsys.model.HistoryModel
+import com.example.mobsys.MainActivity
 import kotlinx.android.synthetic.main.fragment1.*
 import kotlinx.android.synthetic.main.fragment1.view.*
 
@@ -41,6 +44,11 @@ class Fragment2 : Fragment() {
 
     private fun addToHistory(name: String, surname: String) {
 
-        (activity as MainActivity).addToHistory(HistoryModel(name, surname))
+        /*(activity as MainActivity).addToHistory(
+            HistoryModel(
+                name,
+                surname
+            )
+        )*/
     }
 }
