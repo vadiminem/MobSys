@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobsys.view.PR4Activity
+import com.example.mobsys.view.Player
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -115,6 +117,16 @@ class MainActivity : AppCompatActivity() {
             R.id.delete_all_persons -> {
                 personViewModel.deleteAllPersons()
                 Toast.makeText(this, "All persons deleted", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.open_player -> {
+                val intent = Intent(this, Player::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.open_anim -> {
+                val intent = Intent(this, Animation::class.java)
+                startActivity(intent)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

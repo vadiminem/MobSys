@@ -4,11 +4,15 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.net.toFile
 import com.example.mobsys.services.PlayerService
 import com.example.mobsys.R
+import java.io.File
+import java.net.URI
 
 class Player : AppCompatActivity() {
 
@@ -28,6 +32,13 @@ class Player : AppCompatActivity() {
             openLinkInBrowser()
         }
 
+
+        val intent = getIntent()
+        if (Intent.ACTION_SEND.equals(intent.action)) {
+            val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
+            val file = File(uri.path)
+            Toast.makeText(this, file.name, Toast.LENGTH_SHORT).show()
+        }
 
     }
 

@@ -5,4 +5,12 @@
         android:id="@+id/delete_all_persons"
         android:title="Delete all persons"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/open_player"
+        android:title="Open player"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/open_anim"
+        android:title="Open anim"
+        app:showAsAction="never" />
 </menu>
